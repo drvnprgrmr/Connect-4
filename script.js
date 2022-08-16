@@ -46,8 +46,8 @@ function drawBackground() {
     bg.setAttribute("id", "board");
     bg.style.backgroundColor = "blue";
 
-    bg.style.width = `${7 * unitLength}px`;
-    bg.style.height = `${6 * unitLength}px`;
+    bg.style.width = `${8 * unitLength}px`;
+    bg.style.height = `${7 * unitLength}px`;
 
     // Draw board to screen.
     mainEl.appendChild(bg);
@@ -57,30 +57,84 @@ function addCircle(e) {
     const circle = e.target;
     const pos = circle.id;
 
-    const posY = pos[pos.length - 1];
-    const posX = pos[pos.length - 2];
+    const posY = Number(pos[pos.length - 1]);
+    const posX = Number(pos[pos.length - 2]);
 
     let color = gameBoard[posY][posX];
 
     if (color === "") {
-      console.log(color.length)
-      // Update the board
-      color = curPlayer === 1 ? "R" : "Y";
-      gameBoard[posY][posX] = color
+        // Update the board
+        color = curPlayer === 1 ? "R" : "Y";
+        gameBoard[posY][posX] = color;
 
-      // Update the circle's color
-      circle.style.backgroundColor = color === "R" ? "red" : "yellow";
+        // Update the circle's color
+        circle.style.backgroundColor = color === "R" ? "red" : "yellow";
 
-      curPlayer *= -1;
+        curPlayer *= -1;
+    }
+    checkWin(posY, posX, color);
+}
+
+function checkWin(y, x, color) {
+    const possibleWins = [
+        _top,
+        left,
+        bottom,
+        right,
+        topLeftDiagonal,
+        topRightDiagonal,
+        bottomLeftDiagonal,
+        bottomRightDiagonal,
+    ] = [[], [], [], [], [], [], [], []];
+
+    for (let i = 1; i < 4; i++) {
+        // Handle the top circles
+        _top.push(checkNull(y - i, x));
+
+        // Handle the bottom circles
+        bottom.push(checkNull(y + i, x));
+
+        // Handle the left circles
+        left.push(checkNull(y, x - i));
+
+        // Handle the right circles
+        right.push(checkNull(y, x + i));
+
+        // Handle circles to the top right diagonal
+        topRightDiagonal.push(checkNull(y - i, x + i));
+
+        // Handle circles to the top left diagonal
+        topLeftDiagonal.push(checkNull(y - i, x - i));
+
+        // Handle circles to the bottom left diagonal
+        bottomLeftDiagonal.push(checkNull(y + i, x - i));
+
+        // Handle circles to the bottom right diagonal
+        bottomRightDiagonal.push(checkNull(y + i, x + i));
+    }
+
+    // Check if the other colors are the same
+    possibleWins.forEach(win => {
+        if (color.repeat(3) === win.join("")) {
+            console.log(`${color} wins!`)
+        }
+    })
+}
+
+function checkNull(y, x) {
+    try {
+        const val = gameBoard[y][x];
+        return val;
+    } catch (err) {
+        return "";
     }
 }
 
+// function getRow(x, y) {
+//     for (let i of ) {
 
-function checkWin() {
-  let diagonals
-  // TODO: add winning logic
-}
-
+//     }
+// }
 
 drawBackground();
 drawBoard();
