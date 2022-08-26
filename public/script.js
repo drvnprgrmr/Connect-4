@@ -1,9 +1,3 @@
-//TODO: Create array dict of arrays to hold R Y or ""
-/**
- * create draw functionality that takes said array and generates html code
- * add x, y cooreinate syetem as ids
- *
- */
 const unitLength = 40;
 const mainEl = document.querySelector("main");
 let curPlayer = 1; // 1 for red -1 for yellow
@@ -129,12 +123,6 @@ function checkNull(y, x) {
         return "";
     }
 }
-
-// function getRow(x, y) {
-//     for (let i of ) {
-
-//     }
-// }
 
 drawBackground();
 drawBoard();
