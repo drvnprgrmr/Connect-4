@@ -1,6 +1,11 @@
+import socket from "./socket.js";
+
 const unitLength = 40;
 const mainEl = document.querySelector("main");
 let curPlayer = 1; // 1 for red -1 for yellow
+
+
+socket.emit("move", "k")
 
 let gameBoard = [
     ["", "", "", "", "", "", ""],

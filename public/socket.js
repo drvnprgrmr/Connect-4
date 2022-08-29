@@ -1,10 +1,8 @@
-const io  = require("socket.io-client")
+import { io } from "https://cdn.socket.io/4.3.2/socket.io.esm.min.js"
 
 const url = "http://localhost:3000"
 
-const socket = io(url, {
-    autoConnect: false
-})
+const socket = io(url)
 
 
 socket.onAny((event, ...args)=> {
@@ -19,4 +17,4 @@ socket.on("move", (color) => {
 
 
 
-module.exports = socket
+export default socket

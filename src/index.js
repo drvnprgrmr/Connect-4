@@ -1,33 +1,48 @@
 const express = require("express")
 const bodyParser = require("body-parser")
 const path = require("path")
-
+const url = require("url")
 const app = express()
 
-const socket = require("./socket")
 const PORT = 8080
 
 
+app.set("views", "./views")
+app.set("view engine", "ejs")
+
+app.use(express.static(__dirname))
 app.use("/public", express.static(path.join(__dirname, "..", "public")))
 app.use(bodyParser.urlencoded({extended: true}))
 
-  
+
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/views/new-player.html")
+    res.render("new-player")
     
 })
 
 app.get("/index",  (req, res) => {
-    res.sendFile(__dirname + "/views/index.html")
+    const username = req.query.username
+    console.log(req.body)
+    
+    console.log(username)
+    if (username) {
+        res.render("index")
+    } else {
+        res.redirect("/")
+    }
+    
 })
 
 app.post("/new-player", (req, res) => {
-    console.log(req.body)
     const username = req.body.username
-    socket.auth = {username}
-    socket.connect()
-    res.redirect("/index")
+
+    res.redirect(url.format({
+        pathname: "/index",
+        query: {
+            username: username
+        }
+    }))
 })
 
 

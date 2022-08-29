@@ -28,6 +28,9 @@ io.on("connection", (socket) => {
             username: socket.username
         })
     }
+
+    socket.emit("users", users)
+    socket.on("move", console.log)
     // Limit the number of connections to two.
     if (users.length > 2) {
         
@@ -36,8 +39,9 @@ io.on("connection", (socket) => {
 
 })
 
+
 io.on("disconnect", (socket) => {
-    console.log()
+    console.log(socket.username + " has disconnected")
 })
 
 
